@@ -24,7 +24,7 @@ import kotlin.collections.ArrayList
 
 class SongsAdapter(
     val context: Context,
-    private var songList: MutableList<Song>
+    private var songList: MutableList<Song>,val clicked:()->Unit
 ) : RecyclerView.Adapter<SongsAdapter.SongsViewHolder>(), PopupTextProvider {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongsViewHolder {
@@ -50,6 +50,7 @@ class SongsAdapter(
 
         holder.itemView.setOnClickListener {
             MusicPlayerRemote.sendAllSong(songList, position)
+            clicked()
         }
     }
 

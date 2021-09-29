@@ -30,7 +30,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 open class MainActivity : AppCompatActivity() {
-
+    val favList = mutableSetOf<Song>()
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<FrameLayout>
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -142,7 +142,7 @@ open class MainActivity : AppCompatActivity() {
         setMiniPlayerAlpha(0f)
     }
 
-    private fun expandPanel() {
+     fun expandPanel() {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         setMiniPlayerAlpha(1f)
     }

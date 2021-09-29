@@ -25,7 +25,7 @@ class SongViewModel(private val repository: SongRepository) : ViewModel() {
     }
 
     private val loadSongs: Deferred<List<Song>>
-        get() = viewModelScope.async(Dispatchers.IO) { repository.getAllSongs() }
+        get() = viewModelScope.async { repository.getAllSongs() }
 
     fun forceReload() = viewModelScope.launch {
         val list = loadSongs.await()

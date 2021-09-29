@@ -16,15 +16,17 @@ import com.zakariya.mzmusicplayer.repository.SongRepository
 import com.zakariya.mzmusicplayer.services.PlayerService
 import com.zakariya.mzmusicplayer.ui.SongViewModel
 import com.zakariya.mzmusicplayer.ui.SongViewModelFactory
+import com.zakariya.mzmusicplayer.ui.activity.MainActivity
 import com.zakariya.mzmusicplayer.util.*
 import com.zakariya.mzmusicplayer.util.Constants.PREF_NAME
 import com.zakariya.mzmusicplayer.util.PlayerHelper.getSongThumbnail
-import kotlinx.android.synthetic.main.fragment_player.*
+import kotlinx.android.synthetic.main.activity_player.*
+//import kotlinx.android.synthetic.main.fragment_player.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class PlayerFragment : Fragment(R.layout.fragment_player), View.OnClickListener, SongChangeNotifier,
+class PlayerFragment : Fragment(R.layout.activity_player), View.OnClickListener, SongChangeNotifier,
     PlayPauseStateNotifier, SeekCompletionNotifier {
 
     private lateinit var viewModel: SongViewModel
@@ -51,15 +53,32 @@ class PlayerFragment : Fragment(R.layout.fragment_player), View.OnClickListener,
         sharedPreferences = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initPlay()
+    }
 
-        if (SharedPreferenceUtil.getCurrentSong(sharedPreferences) != null) {
+    private fun initPlay() {
+        val currentsong = SharedPreferenceUtil.getCurrentSong(sharedPreferences)
+        try {
+//        if (currentsong != null) {
             txtSongTitle.isSelected = true
             txtArtistName.isSelected = true
             updateUi()
 
             fabPlayPause.setOnClickListener(this)
+            btnBack.setOnClickListener { requireActivity().onBackPressed() }
+            btnHome.setOnClickListener { requireActivity().onBackPressed() }
+            btnFavorite.isSelected =
+                ((requireActivity() as MainActivity).favList.contains(currentsong))
+            btnFavorite.setOnClickListener {
+                if (!btnFavorite.isSelected)
+                    (requireActivity() as MainActivity).favList.add(SharedPreferenceUtil.getCurrentSong(sharedPreferences)!!)
+                else
+                    (requireActivity() as MainActivity).favList.remove(SharedPreferenceUtil.getCurrentSong(sharedPreferences))
+                btnFavorite.isSelected = !btnFavorite.isSelected
+            }
             btnNext.setOnClickListener(this)
             btnPrevious.setOnClickListener(this)
             btnPlayList.setOnClickListener(this)
@@ -78,10 +97,11 @@ class PlayerFragment : Fragment(R.layout.fragment_player), View.OnClickListener,
                 override fun onStartTrackingTouch(p0: SeekBar?) = Unit
                 override fun onStopTrackingTouch(p0: SeekBar?) = Unit
             })
-        } else {
-            rlPlayer.visibility = View.GONE
-            txtEmptySong.visibility = View.VISIBLE
-        }
+//        } else {
+//    //            rlPlayer.visibility = View.GONE
+//    //            txtEmptySong.visibility = View.VISIBLE
+//        }
+        }catch (e:Exception){}
     }
 
     override fun onResume() {
@@ -142,6 +162,8 @@ class PlayerFragment : Fragment(R.layout.fragment_player), View.OnClickListener,
             val imgByte = getSongThumbnail(currentSong!!.path)
             Glide.with(requireContext()).asBitmap().load(imgByte).error(R.drawable.ic_album)
                 .into(imgThumbnail)
+            Glide.with(requireContext()).asBitmap().load(imgByte).error(R.drawable.ic_album)
+                .into(blur_image)
         }
 
         setUpSeekBar()

@@ -10,12 +10,12 @@
     <ImageView
         android:layout_width="72dp"
         android:layout_height="72dp"
-        android:src="@drawable/launcher_icon" />
+        android:src="@drawable/ic_launcher_music" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mz Music"
+        android:text="Music"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginTop="10dp" />

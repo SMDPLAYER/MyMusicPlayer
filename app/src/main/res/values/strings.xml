@@ -1,9 +1,19 @@
 <resources>
-    <string name="app_name">Mz Music</string>
+    <string name="app_name">Music PLayer</string>
     <string name="txt_no_song">No song is playing, play a song to see controls</string>
     <string name="songs">Songs</string>
     <string name="albums">Albums</string>
     <string name="artists">Artists</string>
     <string name="favourites">Favourites</string>
     <string name="play_pause_button">Play Pause Button</string>
+
+
+    <string name="allow_permission">Allow permission to excess media files</string>
+    <string name="home">Home</string>
+    <string name="album">Album</string>
+    <string name="favourite">Favourite</string>
+    <string name="dummy_song_title">O Saki Saki</string>
+    <string name="peaches_poster">https://i.pinimg.com/736x/3d/44/b1/3d44b17d4872e11e6447aa381fec1a8f.jpg</string>
+    <string name="last_song">You have reached last song</string>
+    <string name="first_song">You have reached first song</string>
 </resources>

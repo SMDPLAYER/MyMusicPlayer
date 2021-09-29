@@ -12,6 +12,7 @@ import com.zakariya.mzmusicplayer.adapter.SongsAdapter
 import com.zakariya.mzmusicplayer.repository.SongRepository
 import com.zakariya.mzmusicplayer.ui.SongViewModel
 import com.zakariya.mzmusicplayer.ui.SongViewModelFactory
+import com.zakariya.mzmusicplayer.ui.activity.MainActivity
 import com.zakariya.mzmusicplayer.views.ScrollingViewOnApplyWindowInsetsListener
 import kotlinx.android.synthetic.main.fragment_song.*
 import me.zhanghai.android.fastscroll.FastScroller
@@ -59,7 +60,9 @@ class SongFragment : Fragment(R.layout.fragment_song) {
     }
 
     private fun initAdapter() {
-        adapter = SongsAdapter(requireContext(), mutableListOf())
+        adapter = SongsAdapter(requireContext(), mutableListOf()){
+            ( requireActivity() as MainActivity).expandPanel()
+        }
         rvSongs.adapter = adapter
     }
 

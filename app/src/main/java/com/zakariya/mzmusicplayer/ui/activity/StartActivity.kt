@@ -3,10 +3,12 @@ package com.zakariya.mzmusicplayer.ui.activity
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.zakariya.mzmusicplayer.R
 import com.zakariya.mzmusicplayer.util.Constants.REQ_CODE
@@ -14,26 +16,33 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class SplashActivity : AppCompatActivity() {
-
+class StartActivity : AppCompatActivity() {
     private val permissions = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
-
+//        setContentView(R.layout.activity_splash)
+//
         if (!hasPermissions(permissions)) {
-            ActivityCompat.requestPermissions(this, permissions, REQ_CODE)
-        } else {
-            lifecycleScope.launch(Dispatchers.Main) {
-//                delay(1000L)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                lifecycleScope.launch {
+//                    delay(1000L)
+                    requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE), REQ_CODE)
+//                }
 
-             val intent=   Intent(this@SplashActivity, MainActivity::class.java)
-                startActivity(intent)
-                this@SplashActivity.finish()
             }
+//            else
+//            ActivityCompat.requestPermissions(this, permissions, REQ_CODE)
+        } else {
+//            lifecycleScope.launch(Dispatchers.Main) {
+//////                delay(1000L)
+////
+//                val intent=   Intent(this@StartActivity, MainActivity::class.java)
+//                startActivity(intent)
+//                this@StartActivity.finish()
+//            }
         }
     }
 
@@ -48,13 +57,13 @@ class SplashActivity : AppCompatActivity() {
             REQ_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     lifecycleScope.launch() {
-                    val intent=    Intent(this@SplashActivity, MainActivity::class.java)
-                        this@SplashActivity.finish()
+                        val intent=    Intent(this@StartActivity, MainActivity::class.java)
+                        this@StartActivity.finish()
                         startActivity(intent)
                     }
                 } else {
                     Toast.makeText(
-                        this@SplashActivity,
+                        this@StartActivity,
                         "Please Grant all permissions to continue",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -64,7 +73,7 @@ class SplashActivity : AppCompatActivity() {
             }
 
             else -> {
-                Toast.makeText(this@SplashActivity, "Something went wrong", Toast.LENGTH_SHORT)
+                Toast.makeText(this@StartActivity, "Something went wrong", Toast.LENGTH_SHORT)
                     .show()
                 this.finish()
             }
@@ -85,5 +94,18 @@ class SplashActivity : AppCompatActivity() {
 //    override fun onPause() {
 //        super.onPause()
 //        finish()
+//    }
+//    fun checkPermission(permission: String, granted: () -> Unit) {
+//        val mContext = this ?: return
+//        val options = Permissions.Options()
+//        options.setSettingsDialogMessage("Вы навсегда запретили приложению доступ к геопозиции! Разрешите приложению использовать ваши геоданные в настройках!")
+//        options.setSettingsText("Настройки")
+//        options.setSettingsDialogTitle("Требуются разрешения")
+//        options.setCreateNewTask(true)
+//        Permissions.check(mContext, arrayOf(permission), null, options, object : PermissionHandler() {
+//            override fun onGranted() {
+//                granted()
+//            }
+//        })
 //    }
 }
